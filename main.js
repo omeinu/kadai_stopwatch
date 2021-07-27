@@ -1,11 +1,9 @@
 $(document).ready(function(){
   
-  let milliseconds = 0;
-  let seconds = 0;
+  let time = 0;
   let interval_id;
   
-  $seconds = $(".count_seconds");
-  $milliseconds = $(".count_milliseconds");
+  $counter = $("#counter")
   
   $start = $("#start");
   $stop = $("#stop");
@@ -16,10 +14,10 @@ $(document).ready(function(){
   $start.click(function(){
     
     const startTime = function(){
-      milliseconds += 1
-      $milliseconds.text(milliseconds);
+      time += 1
+      document.getElementById('counter').value = count_format(time);
     };
-  interval_id  =  setInterval(startTime,100);
+  interval_id  =  setInterval(startTime,10);
     toggle();
   });
 /////////////////////////ストップ押したとき//////////////////////////
@@ -30,8 +28,8 @@ $(document).ready(function(){
   });
 ///////////////////////リセット押したとき/////////////////////////
    $reset.click(function(){
-    milliseconds = 0;
-    $milliseconds.text(milliseconds);
+    time = 0;
+    document.getElementById('counter').value = count_format(0);
   });
 ///////////////////////ボタンの切り替え/////////////////////////
   function toggle(){
@@ -43,15 +41,17 @@ $(document).ready(function(){
         $start.prop("disabled",false);
         $stop.prop("disabled",true);
         $reset.prop("disabled",false);
-    };
-  };
+    }
+  }
  ///////////////////////秒数の追加/////////////////////////
-    function counter(){
-      if(milliseconds > 99){
-        milliseconds = 0;
-        seconds += 1;
-        $seconds.text(seconds);
-      }
-    };
-  
+    function count_format(num){
+      let tms = num % 99;
+      let ts= Math.floor(num / 99);
+      let tm = Math.floor(ts / 60);
+      ts = ts % 60;
+      if(tms < 10)tms = "0" + tms;
+      if(ts < 10)ts = "0" + ts;
+      if(tm < 10)tm = "0" + tm;
+      return tm + ":" + ts + ":" + tms;
+    }
 });
